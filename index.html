@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Tour Photos ✨</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --sky: #e8f4fd; --ocean: #1a6b8a; --ocean-light: #2e8fad;
+  --sunrise: #f97316; --sunrise-soft: #fff0e6;
+  --sand: #fdf8f2; --leaf: #2d7a4f; --leaf-light: #e8f5ee;
+  --text: #1c2b38; --muted: #7a8f9e; --card: #ffffff;
+  --border: #e2ecf4; --gold: #f59e0b; --gold-soft: #fffbeb;
+}
+body { font-family: 'Nunito', sans-serif; background: var(--sand); color: var(--text); min-height: 100vh; }
+
+/* HERO */
+.hero {
+  background: linear-gradient(160deg, #0f4c6b 0%, #1a6b8a 50%, #1e8a7a 100%);
+  padding: 52px 24px 80px; text-align: center; position: relative; overflow: hidden;
+}
+.hero::before {
+  content:''; position:absolute; inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-emoji { font-size: 56px; display: block; margin-bottom: 16px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+.hero h1 { font-family:'Lora',serif; font-size:clamp(26px,6vw,44px); color:#fff; line-height:1.2; margin-bottom:12px; position:relative; }
+.hero h1 em { font-style:italic; color:#a8e6cf; }
+.hero-sub { color:#b8d8e8; font-size:16px; font-weight:300; position:relative; max-width:400px; margin:0 auto; line-height:1.6; }
+.client-greeting { display:none; background:rgba(255,255,255,.15); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.25); border-radius:50px; padding:8px 22px; font-size:15px; color:#fff; font-weight:700; margin-top:20px; position:relative; }
+
+/* WAVE */
+.wave { display:block; margin-top:-2px; width:100%; }
+
+/* SETUP */
+.setup-panel { background:var(--ocean); padding:20px 24px; border-bottom:3px solid var(--ocean-light); }
+.setup-panel h3 { color:#fff; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:14px; opacity:.6; }
+.setup-grid { display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end; }
+.setup-field { display:flex; flex-direction:column; gap:4px; }
+.setup-field label { color:#b8d8e8; font-size:12px; font-weight:600; }
+.setup-field input { background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); border-radius:8px; color:#fff; padding:9px 14px; font-size:13px; font-family:inherit; width:200px; outline:none; transition:border .2s,background .2s; }
+.setup-field input:focus { border-color:#a8e6cf; background:rgba(255,255,255,.18); }
+.setup-field input::placeholder { color:rgba(255,255,255,.35); }
+.btn-gen { background:var(--sunrise); color:#fff; border:none; border-radius:8px; padding:10px 20px; font-size:13px; font-family:inherit; font-weight:700; cursor:pointer; transition:background .2s; white-space:nowrap; }
+.btn-gen:hover { background:#ea6c0a; }
+.copy-box { display:none; background:rgba(0,0,0,.25); border-radius:10px; padding:12px 16px; margin-top:14px; align-items:center; gap:10px; flex-wrap:wrap; }
+.copy-box .link-text { flex:1; font-size:12px; color:#a8e6cf; word-break:break-all; }
+.btn-copy { background:transparent; border:1px solid #a8e6cf; color:#a8e6cf; border-radius:6px; padding:6px 14px; font-size:12px; font-family:inherit; font-weight:700; cursor:pointer; white-space:nowrap; transition:background .2s; }
+.btn-copy:hover { background:rgba(168,230,207,.15); }
+
+/* MAIN */
+.main { max-width:640px; margin:0 auto; padding:32px 20px 60px; }
+
+/* CARD */
+.card { background:var(--card); border-radius:20px; padding:28px 24px; margin-bottom:20px; box-shadow:0 2px 16px rgba(26,107,138,.08); border:1px solid var(--border); opacity:0; transform:translateY(20px); animation:slideUp .5s forwards; }
+.card:nth-child(1){animation-delay:.1s}.card:nth-child(2){animation-delay:.25s}.card:nth-child(3){animation-delay:.4s}
+@keyframes slideUp { to { opacity:1; transform:translateY(0) } }
+.card-header { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+.card-icon { width:44px; height:44px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+.card-icon.blue{background:var(--sky)} .card-icon.orange{background:var(--sunrise-soft)} .card-icon.green{background:var(--leaf-light)} .card-icon.gold{background:var(--gold-soft)}
+.card-header h2 { font-family:'Lora',serif; font-size:19px; line-height:1.3; }
+.card-header h2 small { display:block; font-family:'Nunito',sans-serif; font-size:13px; color:var(--muted); font-weight:400; margin-top:2px; }
+
+/* LOCKED PHOTOS */
+.locked-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; border-radius:12px; overflow:hidden; position:relative; margin-bottom:14px; }
+.locked-grid .ph { aspect-ratio:4/3; filter:blur(8px) brightness(.6) saturate(.5); transition:filter 1s ease; }
+.ph:nth-child(1){background:linear-gradient(135deg,#1a6b8a,#2e8fad)}
+.ph:nth-child(2){background:linear-gradient(135deg,#2d7a4f,#4aad78)}
+.ph:nth-child(3){background:linear-gradient(135deg,#0f4c6b,#1e8a7a)}
+.ph:nth-child(4){background:linear-gradient(135deg,#f97316,#fbbf24)}
+.ph:nth-child(5){background:linear-gradient(135deg,#6b3a8a,#ad5acc)}
+.ph:nth-child(6){background:linear-gradient(135deg,#8a6b1a,#c4a020)}
+.locked-overlay { position:absolute; inset:0; background:rgba(248,244,240,.72); backdrop-filter:blur(2px); display:flex; flex-direction:column; align-items:center; justify-content:center; transition:opacity .6s; }
+.locked-overlay .lo-icon { font-size:36px; margin-bottom:6px; }
+.locked-overlay p { font-size:13px; font-weight:700; color:var(--ocean); text-align:center; max-width:160px; line-height:1.4; }
+
+/* SURVEY */
+.survey-q { margin-bottom:22px; }
+.survey-q p { font-size:15px; font-weight:600; margin-bottom:12px; line-height:1.4; }
+.emoji-scale { display:flex; justify-content:space-between; gap:6px; }
+.emoji-btn { flex:1; background:var(--sky); border:2px solid transparent; border-radius:12px; padding:10px 4px; font-size:26px; text-align:center; cursor:pointer; transition:all .2s; display:flex; flex-direction:column; align-items:center; gap:4px; line-height:1; }
+.emoji-btn span { font-size:10px; font-weight:700; color:var(--muted); font-family:'Nunito',sans-serif; }
+.emoji-btn:hover { transform:scale(1.08); background:#d8ecf8; }
+.emoji-btn.selected { border-color:var(--ocean); background:#c8e6f5; transform:scale(1.1); }
+.star-row { display:flex; gap:8px; }
+.star-btn { font-size:32px; cursor:pointer; transition:transform .15s; line-height:1; }
+.star-btn:hover,.star-btn.lit { transform:scale(1.15); }
+.survey-textarea { width:100%; min-height:88px; background:var(--sky); border:2px solid var(--border); border-radius:12px; padding:14px 16px; font-family:'Nunito',sans-serif; font-size:14px; color:var(--text); resize:vertical; outline:none; transition:border .2s; line-height:1.5; }
+.survey-textarea:focus { border-color:var(--ocean-light); background:#fff; }
+.survey-textarea::placeholder { color:var(--muted); }
+.btn-next { width:100%; background:linear-gradient(135deg,var(--ocean),var(--ocean-light)); color:#fff; border:none; border-radius:14px; padding:16px; font-size:16px; font-family:'Nunito',sans-serif; font-weight:700; cursor:pointer; transition:opacity .2s,transform .1s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 16px rgba(26,107,138,.3); margin-top:8px; }
+.btn-next:hover { opacity:.9; transform:translateY(-1px); }
+
+/* REVIEW */
+.review-intro { background:linear-gradient(135deg,var(--gold-soft),#fff8e1); border:1px solid #fde68a; border-radius:14px; padding:18px; margin-bottom:20px; font-size:14px; line-height:1.65; color:#78350f; }
+.review-intro strong { color:#92400e; }
+.platform-btn { display:flex; align-items:center; gap:14px; width:100%; padding:16px 18px; border-radius:14px; border:2px solid var(--border); background:var(--card); cursor:pointer; text-decoration:none; color:var(--text); font-family:'Nunito',sans-serif; font-size:14px; font-weight:700; transition:all .2s; margin-bottom:10px; }
+.platform-btn:hover { border-color:var(--ocean-light); background:var(--sky); transform:translateX(5px); }
+.platform-btn .p-icon { font-size:28px; width:36px; text-align:center; }
+.platform-btn .p-info { flex:1; text-align:left; }
+.platform-btn .p-info small { display:block; font-weight:400; font-size:12px; color:var(--muted); margin-top:2px; }
+.platform-btn .p-arrow { color:var(--muted); font-size:18px; }
+.confirm-bar { background:var(--leaf-light); border:1px solid #b7dfc6; border-radius:14px; padding:18px; text-align:center; margin-top:16px; }
+.confirm-bar p { font-size:13px; color:var(--leaf); margin-bottom:12px; line-height:1.5; }
+.btn-confirm { background:var(--leaf); color:#fff; border:none; border-radius:12px; padding:13px 28px; font-size:15px; font-family:'Nunito',sans-serif; font-weight:800; cursor:pointer; transition:background .2s,transform .1s; box-shadow:0 4px 14px rgba(45,122,79,.3); }
+.btn-confirm:hover { background:#256040; }
+.btn-skip { background:none; border:none; color:var(--muted); font-size:13px; cursor:pointer; font-family:inherit; text-decoration:underline; display:block; margin:12px auto 0; }
+
+/* DOWNLOAD */
+.download-card { display:none; background:linear-gradient(160deg,#0f4c6b 0%,#1a6b8a 60%,#1e8a7a 100%); border-radius:20px; padding:36px 24px; text-align:center; box-shadow:0 8px 32px rgba(26,107,138,.35); animation:popIn .5s cubic-bezier(.34,1.56,.64,1); margin-bottom:20px; }
+@keyframes popIn { from{opacity:0;transform:scale(.85) translateY(30px)} to{opacity:1;transform:scale(1) translateY(0)} }
+.download-card .dl-star { font-size:48px; display:block; margin-bottom:8px; animation:spin 1s ease; }
+@keyframes spin { from{transform:rotate(-30deg) scale(0)} to{transform:rotate(0) scale(1)} }
+.download-card h2 { font-family:'Lora',serif; font-size:26px; color:#a8e6cf; margin-bottom:10px; }
+.download-card p { color:#b8d8e8; font-size:14px; margin-bottom:24px; line-height:1.7; font-weight:300; }
+.btn-download { display:inline-flex; align-items:center; gap:10px; background:var(--sunrise); color:#fff; text-decoration:none; border-radius:14px; padding:16px 36px; font-size:16px; font-family:'Nunito',sans-serif; font-weight:800; box-shadow:0 4px 20px rgba(249,115,22,.5); transition:background .2s,transform .1s; }
+.btn-download:hover { background:#ea6c0a; transform:translateY(-2px); }
+.thankyou-note { background:var(--card); border-radius:16px; padding:22px; display:none; gap:14px; align-items:flex-start; border:1px solid var(--border); box-shadow:0 2px 12px rgba(26,107,138,.06); margin-bottom:20px; }
+.thankyou-note .tn-icon { font-size:28px; flex-shrink:0; }
+.thankyou-note p { font-size:14px; line-height:1.65; }
+.thankyou-note p strong { color:var(--ocean); }
+.hidden { display:none !important; }
+footer { text-align:center; padding:20px; font-size:12px; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- SETUP PANEL (tour operator only) -->
+<div id="setupPanel" class="setup-panel">
+  <h3>🛠 Operator panel — generate the link for your client</h3>
+  <div class="setup-grid">
+    <div class="setup-field">
+      <label>Client's name</label>
+      <input id="iNombre" type="text" placeholder="e.g. Sarah Johnson" />
+    </div>
+    <div class="setup-field">
+      <label>Google Drive link (photos)</label>
+      <input id="iDrive" type="text" placeholder="https://drive.google.com/..." style="width:260px" />
+    </div>
+    <button class="btn-gen" onclick="generar()">✨ Generate link</button>
+  </div>
+  <div class="copy-box" id="copyBox">
+    <span class="link-text" id="linkText"></span>
+    <button class="btn-copy" onclick="copiar()">📋 Copy</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="hero-emoji">🌊</span>
+  <h1>What an <em>incredible</em><br>adventure we shared!</h1>
+  <p class="hero-sub">We're so glad you joined us today. We hope you carry these memories with you for a long time.</p>
+  <div class="client-greeting" id="clientGreeting"></div>
+</div>
+<svg class="wave" viewBox="0 0 1440 40" preserveAspectRatio="none" height="40">
+  <path fill="#fdf8f2" d="M0,32 C360,0 1080,48 1440,16 L1440,40 L0,40 Z"/>
+</svg>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- CARD 1: Locked photos -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon blue">📸</div>
+      <h2>Your photos are waiting!<small>Just 2 minutes — we promise it's totally worth it 🙂</small></h2>
+    </div>
+    <div class="locked-grid">
+      <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+      <div class="ph"></div><div class="ph"></div><div class="ph"></div>
+      <div class="locked-overlay" id="lockedOverlay">
+        <div class="lo-icon">🔒</div>
+        <p>We'll unlock them right away</p>
+      </div>
+    </div>
+    <p style="font-size:13px;color:var(--muted);text-align:center;margin-top:8px">Before downloading, we'd love to hear how it went for you 💬</p>
+  </div>
+
+  <!-- CARD 2: Internal survey -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon orange">💬</div>
+      <h2>Tell us how it went<small>Your feedback goes directly to us — it's completely private 🙏</small></h2>
+    </div>
+
+    <div class="survey-q">
+      <p>How did you feel during the tour?</p>
+      <div class="emoji-scale">
+        <button class="emoji-btn" onclick="selEmoji(this,1)">😞<span>Not good</span></button>
+        <button class="emoji-btn" onclick="selEmoji(this,2)">😐<span>Okay</span></button>
+        <button class="emoji-btn" onclick="selEmoji(this,3)">🙂<span>Good</span></button>
+        <button class="emoji-btn" onclick="selEmoji(this,4)">😄<span>Great</span></button>
+        <button class="emoji-btn" onclick="selEmoji(this,5)">🤩<span>Amazing!</span></button>
+      </div>
+    </div>
+
+    <div class="survey-q">
+      <p>How would you rate our guide?</p>
+      <div class="star-row" id="starsGuia">
+        <span class="star-btn" onclick="selStar('guia',1)">☆</span>
+        <span class="star-btn" onclick="selStar('guia',2)">☆</span>
+        <span class="star-btn" onclick="selStar('guia',3)">☆</span>
+        <span class="star-btn" onclick="selStar('guia',4)">☆</span>
+        <span class="star-btn" onclick="selStar('guia',5)">☆</span>
+      </div>
+    </div>
+
+    <div class="survey-q">
+      <p>How was the organization & timing of the tour?</p>
+      <div class="star-row" id="starsOrg">
+        <span class="star-btn" onclick="selStar('org',1)">☆</span>
+        <span class="star-btn" onclick="selStar('org',2)">☆</span>
+        <span class="star-btn" onclick="selStar('org',3)">☆</span>
+        <span class="star-btn" onclick="selStar('org',4)">☆</span>
+        <span class="star-btn" onclick="selStar('org',5)">☆</span>
+      </div>
+    </div>
+
+    <div class="survey-q">
+      <p>What was your favorite moment? <span style="font-weight:400;color:var(--muted)">(optional)</span></p>
+      <textarea class="survey-textarea" id="txtFavorito" placeholder="We love hearing what you enjoyed most 😊" style="min-height:72px"></textarea>
+    </div>
+
+    <div class="survey-q" style="margin-bottom:0">
+      <p>Is there anything we could do better? <span style="font-weight:400;color:var(--muted)">(optional)</span></p>
+      <textarea class="survey-textarea" id="txtMejora" placeholder="Any detail helps — even small things matter to us 🙏"></textarea>
+    </div>
+
+    <button class="btn-next" onclick="irAResena()">Continue ✨ <span style="font-weight:300;font-size:13px">your photos are almost here</span></button>
+  </div>
+
+  <!-- CARD 3: Public review -->
+  <div class="card hidden" id="sec3">
+    <div class="card-header">
+      <div class="card-icon gold">⭐</div>
+      <h2>Would you leave us a review?<small>No pressure — but it truly means the world to us</small></h2>
+    </div>
+
+    <div class="review-intro">
+      We're a small team and reviews are our best form of advertising 💪
+      With just <strong>2 minutes of your time</strong>, you help other travelers discover
+      what you experienced today. We're genuinely grateful! 🧡
+    </div>
+
+    <a class="platform-btn" id="btnGoogle" href="#" target="_blank" rel="noopener">
+      <span class="p-icon">🗺️</span>
+      <span class="p-info">Google Maps<small>The most visible — helps new travelers find us easily</small></span>
+      <span class="p-arrow">→</span>
+    </a>
+    <a class="platform-btn" id="btnTripadvisor" href="#" target="_blank" rel="noopener">
+      <span class="p-icon">🦉</span>
+      <span class="p-info">TripAdvisor<small>Great for international travelers planning their trips</small></span>
+      <span class="p-arrow">→</span>
+    </a>
+    <a class="platform-btn" id="btnGyg" href="#" target="_blank" rel="noopener" style="display:none">
+      <span class="p-icon">🎯</span>
+      <span class="p-info">GetYourGuide<small>Where many tourists book their tours in advance</small></span>
+      <span class="p-arrow">→</span>
+    </a>
+
+    <div class="confirm-bar">
+      <p>Did you leave your review? 🎉<br>Click below to unlock your photos!</p>
+      <button class="btn-confirm" onclick="desbloquear()">✅ Done! Give me my photos</button>
+    </div>
+    <button class="btn-skip" onclick="desbloquear()">Skip this step and download anyway</button>
+  </div>
+
+  <!-- DOWNLOAD -->
+  <div class="download-card" id="downloadCard">
+    <span class="dl-star">🌟</span>
+    <h2>Thank you so much!</h2>
+    <p>It was an absolute pleasure having you on our tour.<br>Here are your memories — enjoy every single one! 📷</p>
+    <a class="btn-download" id="btnDownload" href="#" target="_blank" rel="noopener">📁 Open my photos</a>
+  </div>
+
+  <!-- FAREWELL NOTE -->
+  <div class="thankyou-note" id="thankyouNote">
+    <span class="tn-icon">💌</span>
+    <p>If you ever want to <strong>join us on another adventure</strong>, or know friends who'd love a unique experience, you know where to find us. Safe travels and a huge hug from our whole team! 🌍</p>
+  </div>
+
+</div>
+<footer>Made with love for our adventurers ❤️</footer>
+
+<script>
+// ══ REVIEW LINKS ══
+const REVIEWS = {
+  google:      'https://maps.app.goo.gl/RnQAU1Kfg1VE3JSC8',
+  tripadvisor: 'https://www.tripadvisor.com.ph/UserReviewEdit-g294256-d27511052-Tropicalvista_Travel_And_Tours-El_Nido_Palawan_Island_Palawan_Province_Mimaropa.html',
+  gyg:         'https://www.getyourguide.com/scan-review-qr?activity_id=778601&utm_medium=offline&utm_source=supplier_review_link&utm_campaign=supplier_review_qrcode&utm_content=778601'
+};
+// ════════════════════════════════════════════
+
+const p = new URLSearchParams(window.location.search);
+const paramName  = p.get('client');
+const paramDrive = p.get('photos');
+
+if (paramName && paramDrive) {
+  document.getElementById('setupPanel').style.display = 'none';
+  const g = document.getElementById('clientGreeting');
+  g.textContent = '👋 Hey, ' + decodeURIComponent(paramName) + '!';
+  g.style.display = 'inline-block';
+  document.getElementById('btnGoogle').href      = decodeURIComponent(p.get('google') || REVIEWS.google);
+  document.getElementById('btnTripadvisor').href = decodeURIComponent(p.get('tripadvisor') || REVIEWS.tripadvisor);
+  const gygLink = decodeURIComponent(p.get('gyg') || REVIEWS.gyg);
+  if (gygLink) { document.getElementById('btnGyg').href = gygLink; document.getElementById('btnGyg').style.display = 'flex'; }
+  document.getElementById('btnDownload').href    = decodeURIComponent(paramDrive);
+}
+
+let emojiVal = 0;
+function selEmoji(btn, val) {
+  document.querySelectorAll('.emoji-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  emojiVal = val;
+}
+
+const stars = { guia: 0, org: 0 };
+function selStar(tipo, val) {
+  stars[tipo] = val;
+  const rowId = tipo === 'guia' ? 'starsGuia' : 'starsOrg';
+  document.getElementById(rowId).querySelectorAll('.star-btn').forEach((s, i) => {
+    s.textContent = i < val ? '⭐' : '☆';
+    s.classList.toggle('lit', i < val);
+  });
+}
+
+function irAResena() {
+  document.getElementById('sec3').classList.remove('hidden');
+  document.getElementById('sec3').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function desbloquear() {
+  document.querySelectorAll('.locked-grid .ph').forEach(ph => ph.style.filter = 'none');
+  const ov = document.getElementById('lockedOverlay');
+  if (ov) ov.style.opacity = '0';
+  const dc = document.getElementById('downloadCard');
+  dc.style.display = 'block';
+  const tn = document.getElementById('thankyouNote');
+  tn.style.display = 'flex';
+  dc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function generar() {
+  const nombre = document.getElementById('iNombre').value.trim();
+  const drive  = document.getElementById('iDrive').value.trim();
+  if (!nombre || !drive) { alert('Please enter the client name and the Drive link.'); return; }
+  const base = window.location.href.split('?')[0];
+  const url  = `${base}?client=${encodeURIComponent(nombre)}&photos=${encodeURIComponent(drive)}&google=${encodeURIComponent(REVIEWS.google)}&tripadvisor=${encodeURIComponent(REVIEWS.tripadvisor)}&gyg=${encodeURIComponent(REVIEWS.gyg)}`;
+  document.getElementById('linkText').textContent = url;
+  const cb = document.getElementById('copyBox');
+  cb.style.display = 'flex';
+  window._link = url;
+}
+
+function copiar() {
+  navigator.clipboard.writeText(window._link).then(() => {
+    document.querySelector('.btn-copy').textContent = '✅ Copied!';
+    setTimeout(() => document.querySelector('.btn-copy').textContent = '📋 Copy', 2000);
+  });
+}
+</script>
+</body>
+</html>
